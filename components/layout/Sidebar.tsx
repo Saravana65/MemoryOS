@@ -12,6 +12,7 @@ export const Sidebar: React.FC = () => {
   const navItems = [
     { name: 'Dashboard', href: '/dashboard' },
     { name: 'Upload', href: '/upload' },
+    { name: 'Chat', href: '/chat' },
   ];
 
   return (
