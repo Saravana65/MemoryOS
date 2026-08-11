@@ -13,6 +13,7 @@ export const Sidebar: React.FC = () => {
     { name: 'Dashboard', href: '/dashboard' },
     { name: 'Upload', href: '/upload' },
     { name: 'Chat', href: '/chat' },
+    { name: 'Search', href: '/search' },
     { name: 'Timeline', href: '/timeline' },
   ];
 
