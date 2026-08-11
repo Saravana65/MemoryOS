@@ -11,6 +11,7 @@ from app.models.document import Document
 from app.schemas.document import DocumentResponse, PaginatedDocumentResponse, DocumentDetailResponse
 from app.exceptions import BadRequestException, NotFoundException
 from app.services.storage_service import StorageService
+from app.workers.process_document import process_document
 
 router = APIRouter()
 storage_service = StorageService()
@@ -70,6 +71,9 @@ async def upload_file(
     db.add(db_doc)
     await db.commit()
     await db.refresh(db_doc)
+
+    # Trigger asynchronous document processing pipeline
+    process_document.delay(str(db_doc.id))
 
     return db_doc
 

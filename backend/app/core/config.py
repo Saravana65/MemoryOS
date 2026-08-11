@@ -37,6 +37,9 @@ class Settings(BaseSettings):
     MINIO_SECURE: bool = False
     MINIO_BUCKET_NAME: str = "memoryos-documents"
 
+    # OpenAI
+    OPENAI_API_KEY: str = ""
+
     @field_validator("DATABASE_URL", mode="before")
     @classmethod
     def assemble_db_connection(cls, v: str | None, info: ValidationInfo) -> Any:

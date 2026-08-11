@@ -30,6 +30,36 @@ class Document(Base):
     )
 
     user: Mapped["User"] = relationship("User")
-# We will import User from app.models.user inside the relationship resolve context, 
-# or just declare relationship dynamically. In SQLAlchemy 2.0 type mappings, 
-# you can use string target e.g. Mapped["User"] and it resolves from registry.
+    chunks: Mapped[list["MemoryChunk"]] = relationship(
+        "MemoryChunk",
+        back_populates="document",
+        cascade="all, delete-orphan"
+    )
+
+class MemoryChunk(Base):
+    __tablename__ = "memory_chunks"
+
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    document_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True),
+        ForeignKey("documents.id", ondelete="CASCADE"),
+        nullable=False
+    )
+    user_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True),
+        ForeignKey("users.id", ondelete="CASCADE"),
+        nullable=False
+    )
+    chunk_index: Mapped[int] = mapped_column(nullable=False)
+    chunk_text: Mapped[str] = mapped_column(Text, nullable=False)
+    vector_id: Mapped[str] = mapped_column(String(255), nullable=False)
+    token_count: Mapped[int] = mapped_column(nullable=False)
+    page_number: Mapped[int] = mapped_column(nullable=True)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), 
+        server_default=func.now(), 
+        nullable=False
+    )
+
+    document: Mapped["Document"] = relationship("Document", back_populates="chunks")
+    user: Mapped["User"] = relationship("User")
