@@ -134,7 +134,7 @@ class RAGService:
         # 8. Call Anthropic Claude Messages API
         try:
             response = await self.anthropic_client.messages.create(
-                model="claude-3-5-sonnet-20241022",
+                model=settings.CLAUDE_MODEL,
                 max_tokens=1024,
                 system=system_instruction,
                 messages=messages

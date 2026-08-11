@@ -42,6 +42,7 @@ class Settings(BaseSettings):
 
     # Anthropic
     ANTHROPIC_API_KEY: str = ""
+    CLAUDE_MODEL: str = "claude-sonnet-4-5"
 
     @field_validator("DATABASE_URL", mode="before")
     @classmethod
