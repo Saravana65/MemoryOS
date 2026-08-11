@@ -144,3 +144,48 @@ Enables users to manage conversational sessions and perform context-grounded RAG
     curl -X GET "http://localhost:8000/api/v1/chat/sessions/a576e82a-d81a-4d3b-82ef-d71d87e07a3c/messages" \
          -H "Authorization: Bearer <your_jwt_access_token>"
     ```
+
+---
+
+## Document Semantic Search Endpoint
+
+Allows raw semantic query searches directly across your processed vault contents, returning matching snippet details grouped under unique document containers. Enforces absolute user-level isolation.
+
+### 1. Query Search
+*   **Method**: `GET`
+*   **Path**: `/api/v1/search`
+*   **Query Params**: `q` (required, cannot be empty), `page` (default `1`), `page_size` (default `20`).
+*   **Behavior**:
+    1. Generates query embeddings.
+    2. Retrieves top 20 matches from Qdrant, filtered by `user_id == current_user.id`.
+    3. Excludes any parent document headers whose status is not `'ready'`.
+    4. Groups matching snippets under unique document records, sorting results descending by highest similarity score.
+*   **Response**:
+    ```json
+    {
+      "items": [
+        {
+          "document_id": "7a9df72e-c75c-4d3b-82ef-d71d87e07a3c",
+          "filename": "annual_report.pdf",
+          "file_type": "pdf",
+          "created_at": "2026-08-11T12:00:00Z",
+          "matches": [
+            {
+              "chunk_text": "The project budget for 2026 is projected to increase...",
+              "page_number": 2,
+              "score": 0.8923
+            }
+          ]
+        }
+      ],
+      "total": 1,
+      "page": 1,
+      "page_size": 20,
+      "pages": 1
+    }
+    ```
+*   **Example curl**:
+    ```bash
+    curl -X GET "http://localhost:8000/api/v1/search?q=project%20budget&page=1&page_size=10" \
+         -H "Authorization: Bearer <your_jwt_access_token>"
+    ```
