@@ -24,3 +24,29 @@ class VectorStoreService:
             collection_name=self.collection_name,
             points=points
         )
+
+    def search_chunks(self, user_id: str, query_vector: list[float], limit: int = 8) -> list[dict]:
+        query_filter = models.Filter(
+            must=[
+                models.FieldCondition(
+                    key="user_id",
+                    match=models.MatchValue(value=str(user_id))
+                )
+            ]
+        )
+
+        results = self.client.search(
+            collection_name=self.collection_name,
+            query_vector=query_vector,
+            query_filter=query_filter,
+            limit=limit
+        )
+
+        return [
+            {
+                "id": r.id,
+                "score": r.score,
+                "payload": r.payload
+            }
+            for r in results
+        ]
