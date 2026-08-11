@@ -6,6 +6,7 @@ from qdrant_client.http import models
 from app.core.config import settings
 from app.api.v1.router import api_router
 from app.core.logging import logger
+from app.services.storage_service import StorageService
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -26,6 +27,13 @@ app.add_middleware(
 @app.on_event("startup")
 async def startup_event():
     logger.info("Starting up FastAPI application...")
+    
+    # Initialize MinIO Bucket on startup
+    try:
+        storage_service = StorageService()
+        storage_service.ensure_bucket()
+    except Exception as e:
+        logger.error(f"Error initializing MinIO bucket on startup: {e}")
     
     # Initialize Qdrant collection on startup
     try:
