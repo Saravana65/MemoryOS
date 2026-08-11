@@ -4,22 +4,9 @@ import { Document, PaginatedDocumentList } from '../types/document';
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
 export async function getFiles(page: number = 1, pageSize: number = 50): Promise<PaginatedDocumentList> {
-  const data = await apiFetch<any>(`/api/v1/files?page=${page}&page_size=${pageSize}`, {
+  return apiFetch<PaginatedDocumentList>(`/api/v1/files?page=${page}&page_size=${pageSize}`, {
     method: 'GET',
   });
-
-  // Handle case where backend might return items directly as an array instead of paginated object
-  if (Array.isArray(data)) {
-    return {
-      items: data,
-      total: data.length,
-      page: 1,
-      page_size: data.length,
-      pages: 1,
-    };
-  }
-
-  return data;
 }
 
 export async function getFile(id: string): Promise<Document> {

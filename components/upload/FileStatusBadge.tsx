@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface FileStatusBadgeProps {
-  status: 'pending' | 'processing' | 'completed' | 'failed' | 'uploading';
+  status: 'pending' | 'processing' | 'ready' | 'failed' | 'uploading';
 }
 
 export const FileStatusBadge: React.FC<FileStatusBadgeProps> = ({ status }) => {
@@ -9,7 +9,7 @@ export const FileStatusBadge: React.FC<FileStatusBadgeProps> = ({ status }) => {
     uploading: 'bg-blue-50 text-blue-700 border-blue-200',
     pending: 'bg-yellow-50 text-yellow-700 border-yellow-200',
     processing: 'bg-indigo-50 text-indigo-700 border-indigo-200',
-    completed: 'bg-green-50 text-green-700 border-green-200',
+    ready: 'bg-green-50 text-green-700 border-green-200',
     failed: 'bg-red-50 text-red-700 border-red-200',
   };
 
@@ -17,7 +17,7 @@ export const FileStatusBadge: React.FC<FileStatusBadgeProps> = ({ status }) => {
     uploading: 'Uploading',
     pending: 'Pending',
     processing: 'Processing',
-    completed: 'Ready',
+    ready: 'Ready',
     failed: 'Failed',
   };
 

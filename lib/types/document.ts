@@ -1,7 +1,7 @@
 export interface Document {
   id: string;
   filename: string;
-  status: 'pending' | 'processing' | 'completed' | 'failed';
+  status: 'pending' | 'processing' | 'ready' | 'failed';
   file_size_bytes: number;
   created_at: string;
 }
