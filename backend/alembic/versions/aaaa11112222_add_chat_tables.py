@@ -35,7 +35,7 @@ def upgrade() -> None:
         sa.Column('session_id', postgresql.UUID(as_uuid=True), nullable=False),
         sa.Column('role', sa.String(length=50), nullable=False),
         sa.Column('content', sa.Text(), nullable=False),
-        sa.Column('sources', postgresql.JSONB(as_uuid=False), nullable=True),
+        sa.Column('sources', postgresql.JSONB(), nullable=True),
         sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),
         sa.ForeignKeyConstraint(['session_id'], ['chat_sessions.id'], ondelete='CASCADE'),
         sa.PrimaryKeyConstraint('id')
